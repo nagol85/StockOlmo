@@ -14,7 +14,6 @@ IsTable = function (myobject, req, res, next ){
                         if (myobject[a].children[b].children[c].name == "table") {
                             for (var d = 0; d < myobject[a].children[b].children[c].children[d].children.length; d++){
                                 if (myobject[a].children[b].children[c].children[d].name == "tbody"){
-                                    debugger;
                                     return (myobject[a].children[b].children[c].children[d]);
                                 }
                             }
@@ -58,17 +57,27 @@ ReadFile = function (arch, req, res, next){
         table.push(index);
 
         // define array row values (text)
+        // exeption  mytable.children[0] = Header1 Header2
+        // exeption  mytable.children[1] = Index
         for (var i = 2; i < mytable.children.length; i++) {
             myRow = mytable.children[i];
             var text = [];
             for (var e = 0; e < myRow.children.length; e++) {
                 if (myRow.children[e].children) {
-                    text.push(myRow.children[e].children[0].data);
+                    var datavalue =  myRow.children[e].children[0].data
+                    text.push(datavalue);
                 }
             }
 
-            //insert array text to table object if text defined.
+
+            //insert array text to table object if text defined. & define lot and date
             if (text[8]) {
+                if (!text[9]){
+                    text[9] = 'NON';
+                }
+                if (!text[10]){
+                    text[10] = 'NON';
+                }
                 table.push(text)
             }
 
@@ -77,7 +86,7 @@ ReadFile = function (arch, req, res, next){
         return (table);
     }
     catch(req){
-        console.log('err');
+
         return ('err');
     }
 }

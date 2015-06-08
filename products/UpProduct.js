@@ -1,7 +1,7 @@
 var Product = require('../models/product');
 
 
-UpProduct = function (product, req, res, next) {
+UpProduct = function (product) {
     Product.findOne({'sapId': product[0]},
         function (err, sapId) {
             // In case of any error, return using the done method
@@ -9,9 +9,11 @@ UpProduct = function (product, req, res, next) {
                 console.log('Error in SignUp: ' + err);
                 return done(err);
             }
+
             // already exists
             if (sapId) {
-                console.log('product exists', sapId)
+                return('Product exists')
+                //console.log('product is defined', sapId)
             }
             else {
                 // if there is no product is not defined
@@ -28,17 +30,15 @@ UpProduct = function (product, req, res, next) {
                 // save the user
                 newProduct.save(function (err) {
                     if (err) {
-                        console.log('Error in Saving Product: ', sapId, err);
+                        console.log('Error in Saving Product: ', product[0], err);
                         throw err;
                     }
                     else {
-                        console.log('product saved', sapId[0])
+                        //console.log('Product Defined', product[0])
                     }
-                    //return done(null, user);
                 });
             }
         });
-    return ('Product Update')
 };
 
 module.exports = UpProduct;
